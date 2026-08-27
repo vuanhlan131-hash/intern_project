@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#d2c3c1",
+                    "surface-container-low": "#f9f2f1",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#f9dcd9",
+                    "inverse-surface": "#33302f",
+                    "secondary-container": "#d0e6c8",
+                    "surface-container-high": "#ede7e6",
+                    "on-secondary-fixed-variant": "#394c36",
+                    "background": "#fff8f7",
+                    "on-tertiary-container": "#6f603c",
+                    "secondary-fixed-dim": "#b7cdb0",
+                    "primary": "#6f5957",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed-dim": "#dcc0bd",
+                    "tertiary-fixed-dim": "#d8c599",
+                    "surface-variant": "#e8e1e0",
+                    "on-primary-fixed-variant": "#564240",
+                    "on-surface-variant": "#4f4443",
+                    "on-secondary-fixed": "#0e1f0d",
+                    "on-error-container": "#93000a",
+                    "on-primary-fixed": "#271816",
+                    "inverse-primary": "#dcc0bd",
+                    "on-secondary-container": "#546850",
+                    "surface-container": "#f3eceb",
+                    "inverse-on-surface": "#f6efee",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#f4d7d4",
+                    "secondary": "#50644c",
+                    "surface-bright": "#fff8f7",
+                    "tertiary-container": "#f0dcaf",
+                    "tertiary-fixed": "#f5e0b4",
+                    "surface": "#fff8f7",
+                    "surface-tint": "#6f5957",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1d1b1b",
+                    "surface-container-highest": "#e8e1e0",
+                    "secondary-fixed": "#d3e9cb",
+                    "on-tertiary-fixed-variant": "#534524",
+                    "on-primary-container": "#725c5a",
+                    "surface-dim": "#dfd9d8",
+                    "on-surface": "#1d1b1b",
+                    "error": "#ba1a1a",
+                    "tertiary": "#6c5d39",
+                    "on-tertiary-fixed": "#241a01",
+                    "outline": "#817473",
+                    "on-error": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "xl": "32px",
+                    "sm": "8px",
+                    "unit": "4px",
+                    "xxl": "48px",
+                    "container-margin": "20px",
+                    "xs": "4px",
+                    "lg": "24px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Montserrat"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Montserrat"],
+                    "headline-md": ["Montserrat"],
+                    "label-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "label-lg": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fff8f7;
+            color: #1d1b1b;
+            overflow-x: hidden;
+        }
+
+        .floating-layer {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+
+        .floating-layer:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(111, 89, 87, 0.12), 0 4px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .glass-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #dcc0bd;
+            border-radius: 10px;
+        }
+
+        @keyframes bubbleUp {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(244, 215, 212, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            animation: bubbleUp linear infinite;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Top Navigation Bar (Shared Component Logic) -->
+<header class="sticky top-0 w-full z-50 bg-white/80 dark:bg-inverse-surface/80 glass-nav shadow-[0_4px_20px_rgba(111,89,87,0.05),0_2px_8px_rgba(0,0,0,0.05)]">
+<nav class="flex justify-between items-center px-lg py-md max-w-7xl mx-auto w-full">
+<div class="flex items-center gap-sm">
+<span class="font-display-lg text-headline-md text-primary tracking-tight">BobaJoy</span>
+</div>
+<div class="hidden md:flex items-center gap-xl">
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Trang chủ</a>
+<a class="font-label-lg text-label-lg text-primary font-bold border-b-2 border-primary pb-1" href="#">Thực đơn</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Giới thiệu</a>
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Liên hệ</a>
+</div>
+<button class="bg-primary text-white font-label-lg text-label-lg px-lg py-sm rounded-full shadow-md hover:scale-105 active:scale-95 transition-all duration-200">
+                Đặt hàng ngay
+            </button>
+</nav>
+</header>
+<main class="relative min-h-screen">
+<!-- Atmospheric Background Elements -->
+<div class="fixed inset-0 pointer-events-none" id="bubble-container"></div>
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-container-margin py-xl md:py-xxl text-center">
+<h1 class="font-display-lg text-display-lg text-primary mb-md">Velvet Sip Menu</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                Khám phá hương vị tinh tế trong từng ngụm trà, từ sự ngọt ngào của sữa tươi đến vị thanh mát của trái cây nhiệt đới.
+            </p>
+</section>
+<!-- Interactive Filter Section -->
+<section class="max-w-7xl mx-auto px-container-margin mb-xl sticky top-24 z-40">
+<div class="flex items-center justify-center gap-md flex-wrap p-sm bg-white/60 glass-nav rounded-full shadow-sm max-w-fit mx-auto">
+<button class="category-btn active px-lg py-sm rounded-full font-label-lg text-label-lg transition-all duration-300 bg-primary text-white shadow-md" onclick="filterCategory('all')">
+                    Tất cả
+                </button>
+<button class="category-btn px-lg py-sm rounded-full font-label-lg text-label-lg transition-all duration-300 bg-surface-container text-on-surface-variant hover:bg-primary-container" onclick="filterCategory('tra-sua')">
+                    Trà sữa
+                </button>
+<button class="category-btn px-lg py-sm rounded-full font-label-lg text-label-lg transition-all duration-300 bg-surface-container text-on-surface-variant hover:bg-primary-container" onclick="filterCategory('tra-trai-cay')">
+                    Trà trái cây
+                </button>
+<button class="category-btn px-lg py-sm rounded-full font-label-lg text-label-lg transition-all duration-300 bg-surface-container text-on-surface-variant hover:bg-primary-container" onclick="filterCategory('matcha')">
+                    Matcha
+                </button>
+<button class="category-btn px-lg py-sm rounded-full font-label-lg text-label-lg transition-all duration-300 bg-surface-container text-on-surface-variant hover:bg-primary-container" onclick="filterCategory('special')">
+                    Đồ uống đặc biệt
+                </button>
+</div>
+</section>
+<!-- Menu Grid -->
+<section class="max-w-7xl mx-auto px-container-margin pb-xxl">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-xl" id="menu-grid">
+<!-- Drink Card 1 -->
+<div class="drink-card bg-white rounded-xl p-md floating-layer shadow-[0_4px_20px_rgba(111,89,87,0.05)]" data-category="tra-sua">
+<div class="relative w-full aspect-[4/5] mb-md rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-quality studio photograph of a classic brown sugar pearl milk tea in a tall glass. The glass is covered in refreshing condensation, with dark brown sugar syrup tiger-striping down the inner walls. The drink is topped with creamy white milk foam. The setting is bright and clean with soft pink and cream tones in the background, creating a joyful, modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4lFkXLM2I_5c7OoMOCEchhNkZF92WMr3A3V4a4-84hjIyjoBuHQDxoiSJXOUdhfLVFWlqd4w0zvcSN-PD_B3ZhwDKFuVxbKnY3UGXF4ignISeKHN4vC2V0FznfEev6aLaeZyWyckJ4G9dfE9kKuv7PaQALmFYuGMO5r4nh_QCFCG6M5Hr5qNH6UW8jpy0y0p6RPUY_8L4OK68Rysyv-ABcrIKMzkBYcs1fckEtxj6XuBSnvtvFYX1_w"/>
+<span class="absolute top-sm right-sm bg-primary-container/90 text-on-primary-container font-label-sm text-label-sm px-md py-xs rounded-full glass-nav">Trà sữa</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Trà Sữa Trân Châu Đường Đen</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Sự kết hợp hoàn hảo giữa trân châu dai giòn và sữa tươi béo ngậy cùng đường đen ngọt lịm.</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-secondary">55.000đ</span>
+<button class="bg-secondary-container text-on-secondary-container p-sm rounded-full hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Drink Card 2 -->
+<div class="drink-card bg-white rounded-xl p-md floating-layer shadow-[0_4px_20px_rgba(111,89,87,0.05)]" data-category="tra-trai-cay">
+<div class="relative w-full aspect-[4/5] mb-md rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Vibrant tropical fruit tea with slices of fresh orange, strawberry, and passion fruit in a large clear pitcher. The tea is a bright, sun-kissed amber color with ice cubes sparkling under bright, high-key studio lighting. The background is a soft, airy pastel peach, embodying an energetic and youthful summer vibe with a premium, tactile feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbAlaHm16jTn5yM9DmNnkppCr6E2ko_k2c7kLb0P79WmNtrLjw7M17qFsZQIulVwpXe_5c7_rusvGe9ZN06B6reHXccIJYTWf8lSmJxuPjJL2Tjcq6GD4um-QZ8prk8DJljFOUuEwWSNrXnw6uznnIyucOl69vJ4BVXH0h3udja_FriDChUoVaVBq5blrZLnpVvKEUQBRkT-BH-B2anILixxX7dF6lAfrC2MDujycaGNaFKR_6Qq9rGg"/>
+<span class="absolute top-sm right-sm bg-secondary-container/90 text-on-secondary-container font-label-sm text-label-sm px-md py-xs rounded-full glass-nav">Trà trái cây</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Trà Trái Cây Nhiệt Đới</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Thanh mát với sự hòa quyện của cam, dâu tây và chanh dây tự nhiên.</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-secondary">49.000đ</span>
+<button class="bg-secondary-container text-on-secondary-container p-sm rounded-full hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Drink Card 3 -->
+<div class="drink-card bg-white rounded-xl p-md floating-layer shadow-[0_4px_20px_rgba(111,89,87,0.05)]" data-category="matcha">
+<div class="relative w-full aspect-[4/5] mb-md rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A premium Japanese Matcha Latte with distinct layers of bright green matcha on top and creamy white milk at the bottom. The drink is served in a modern minimalist glass with perfectly shaped ice cubes. The aesthetic is clean and serene, using soft lighting to emphasize the rich texture of the matcha against a light-mode, minimalist studio background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx2Tx7B690CT9OrVCMowBRQw6RF6GavP3IarUEsSECVVTZJBGvtn9XZi8OD1LNPMdIq6LY8uEb7TooyMYE3WAhijxQDq9ZU9fxWPAxb5zh3-AyEHIwxMTNCVWKbaVsNV--7TguPVgDOkSTf1Abye1SPMIhrX8aJtDC8GJQskKLDIpoNhfd3mGhvx9xX_gYtvp2xQxPTzYUkx9sI5jDmzQ_vb08iu29JwxG3j1z-MmGos8_zJ-RywIcVg"/>
+<span class="absolute top-sm right-sm bg-tertiary-container/90 text-on-tertiary-container font-label-sm text-label-sm px-md py-xs rounded-full glass-nav">Matcha</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Matcha Latte Nhật Bản</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Bột Matcha cao cấp nhập khẩu hòa quyện cùng sữa tươi nguyên kem béo nhẹ.</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-secondary">62.000đ</span>
+<button class="bg-secondary-container text-on-secondary-container p-sm rounded-full hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Drink Card 4 -->
+<div class="drink-card bg-white rounded-xl p-md floating-layer shadow-[0_4px_20px_rgba(111,89,87,0.05)]" data-category="special">
+<div class="relative w-full aspect-[4/5] mb-md rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A luxurious specialty velvet chocolate drink topped with a thick layer of pink whipped cream and gold leaf flakes. The glass is elegant and sleek. Lighting is soft and moody but remains within a bright light-mode palette, focusing on the rich browns and soft pinks. The background is an out-of-focus cafe interior with warm, ambient highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvHNSxlIkP6Yhwj8Q6jMY8GATE5VtZNx_x07Vxumv8HRv1bkSb5zS9KP69GdS-l3NBemGP20vKhHvWvPzS-zRSR5jXhgbZLfxapA51aGURXgazo3BC4CiTxGwl7K6KYvw_GnRi77RgcuQRaE52fjAbDpRxbopStSwbXtLFVAr1S4bPTMGK2UnDybEQpcziDJ6ECKhZzjdIP7IHwe1jxnrzB5Lplhgl7rmCH1GnV9JMZyI7GoHlVF22Cg"/>
+<span class="absolute top-sm right-sm bg-primary-container/90 text-on-primary-container font-label-sm text-label-sm px-md py-xs rounded-full glass-nav">Special</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Velvet Chocolate Signature</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Sô-cô-la đậm đặc kết hợp kem nhung hồng độc quyền chỉ có tại Velvet Sip.</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-secondary">69.000đ</span>
+<button class="bg-secondary-container text-on-secondary-container p-sm rounded-full hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Drink Card 5 -->
+<div class="drink-card bg-white rounded-xl p-md floating-layer shadow-[0_4px_20px_rgba(111,89,87,0.05)]" data-category="tra-sua">
+<div class="relative w-full aspect-[4/5] mb-md rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Taro milk tea with a vibrant purple hue and purple tapioca pearls at the bottom. The drink has a creamy texture and is decorated with a sprig of mint on top. The background is a soft, lavender-tinted white, creating a dreamy and aesthetically pleasing composition that feels youthful and fresh." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEtSYUGGJR4TOAio3KLo4uw4plkr01mlbpgj4Rm17ISlgHqmNS2Pdpdq6dhVNIUphX_v0I2OH8aLDjHDvtG3NdAdu3fdWHCEaaXUbOn4s59tn7FGpTat7a0XOXnlLbjZt8trWdKFW7Sdy3HPsTABtZU6Cq0QnA1VDo4qPl5M_kGEiaYh6hhxxDlARF3h-sw64-NwUH0vx7jG4mNgdcA8jc0zSql5a_qsDKnNFxg38HJK0K9NovrhEytw"/>
+<span class="absolute top-sm right-sm bg-primary-container/90 text-on-primary-container font-label-sm text-label-sm px-md py-xs rounded-full glass-nav">Trà sữa</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Trà Sữa Khoai Môn Tím</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Vị khoai môn bùi bùi kết hợp cùng trà lài thơm ngát và trân châu tím.</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-secondary">55.000đ</span>
+<button class="bg-secondary-container text-on-secondary-container p-sm rounded-full hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+<!-- Drink Card 6 -->
+<div class="drink-card bg-white rounded-xl p-md floating-layer shadow-[0_4px_20px_rgba(111,89,87,0.05)]" data-category="tra-trai-cay">
+<div class="relative w-full aspect-[4/5] mb-md rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Sparkling lychee rose tea with real lychee fruits and delicate rose petals floating inside. The drink is served in a crystal clear glass with many small bubbles from sparkling water. The lighting is bright and cheerful, reflecting off the glass and ice. The overall style is modern-tactile with a soft focus on a floral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMz-KUgqs4ZV952g_6hYHAxL7-EA0bJHLZ6IX6v2nklHamAedch4GfEgnLLEO-gCQkHeRrK3NAIpNq6EH6cTvC-QQ_BlWmen9h8az5F92WznhmpwwsANSdEPA76D_QcAjkARKezSnOBwHtPNtT-aCz4d_iAsmH5GjsL_t67HRJDvnvoTXKddus5HxiykYm_nvgy0ovDJrCe06hAhE8YGRsIkXw7Blz6lB0e1PEZwPyZd-G-bivHOVBGw"/>
+<span class="absolute top-sm right-sm bg-secondary-container/90 text-on-secondary-container font-label-sm text-label-sm px-md py-xs rounded-full glass-nav">Trà trái cây</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-xs">Trà Vải Hoa Hồng Sparkling</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md line-clamp-2">Hương hoa hồng quyến rũ kết hợp vải tươi giòn tan và chút sủi bọt nhẹ nhàng.</p>
+<div class="flex justify-between items-center">
+<span class="font-headline-md text-headline-md text-secondary">52.000đ</span>
+<button class="bg-secondary-container text-on-secondary-container p-sm rounded-full hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB for Quick Cart -->
+<button class="fixed bottom-lg right-lg w-16 h-16 bg-gradient-to-tr from-primary to-primary-fixed-dim text-white rounded-full shadow-2xl flex items-center justify-center z-50 hover:scale-110 transition-transform active:scale-90">
+<span class="material-symbols-outlined" style="font-size: 32px;">shopping_bag</span>
+<span class="absolute -top-1 -right-1 bg-secondary text-white text-[10px] w-6 h-6 flex items-center justify-center rounded-full border-2 border-white">3</span>
+</button>
+<!-- Footer (Shared Component Logic) -->
+<footer class="bg-surface-container dark:bg-inverse-surface w-full rounded-t-xl mt-xxl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl px-lg py-xxl max-w-7xl mx-auto">
+<div class="flex flex-col gap-md">
+<span class="font-display-lg text-headline-sm text-primary">BobaJoy</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Mang niềm vui trong từng ngụm trà. Velvet Sip cam kết mang đến trải nghiệm trà sữa hiện đại và chất lượng nhất.</p>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-lg text-label-lg text-primary mb-sm">Thông tin</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Địa chỉ: 123 Đường Sữa, TP.HCM</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Giờ mở cửa: 08:00 - 22:00</p>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary underline transition-all" href="#">Chính sách bảo mật</a>
+</div>
+<div class="flex flex-col gap-sm">
+<h4 class="font-label-lg text-label-lg text-primary mb-sm">Theo dõi chúng tôi</h4>
+<div class="flex gap-md">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Instagram</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">Facebook</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all" href="#">TikTok</a>
+</div>
+<p class="mt-md font-body-md text-body-md text-on-surface-variant opacity-70">© 2024 BobaJoy. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Category Filtering Logic
+        function filterCategory(category) {
+            const cards = document.querySelectorAll('.drink-card');
+            const buttons = document.querySelectorAll('.category-btn');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-primary', 'text-white', 'shadow-md');
+                btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+            });
+
+            event.currentTarget.classList.remove('bg-surface-container', 'text-on-surface-variant');
+            event.currentTarget.classList.add('bg-primary', 'text-white', 'shadow-md');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                    card.classList.add('animate-in', 'fade-in', 'zoom-in');
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Bubbles Animation
+        function createBubbles() {
+            const container = document.getElementById('bubble-container');
+            const bubbleCount = 20;
+
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                
+                const size = Math.random() * 40 + 10;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 10 + 10;
+                const delay = Math.random() * 20;
+
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${left}%`;
+                bubble.style.bottom = `-50px`;
+                bubble.style.animationDuration = `${duration}s`;
+                bubble.style.animationDelay = `-${delay}s`;
+
+                container.appendChild(bubble);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', createBubbles);
+
+        // Micro-interaction for drink cards
+        document.querySelectorAll('.drink-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.zIndex = "10";
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.zIndex = "1";
+            });
+        });
+    </script>
+</body></html>
